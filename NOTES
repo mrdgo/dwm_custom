@@ -1,0 +1,2 @@
+# Get missing dependency
+sudo apt install libxinerama-dev
