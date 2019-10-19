@@ -5,6 +5,8 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
+static const int vertpadbar         = 0;        /* vertical padding for statusbar */
 static const char *fonts[]          = { "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
@@ -64,26 +66,26 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "rofi", "-modi", "drun", "-show", "drun", "-theme", "gruvbox-dark-soft", NULL };
+static const char *wincmd[] = { "rofi", "-modi", "window", "-show", "window", "-theme", "gruvbox-dark-soft", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *iconcmd[] = {"/home/maxim/github/rofi-fontawesome/fontawesome-menu/fontawesome-menu", "-f", "/home/maxim/github/rofi-fontawesome/fontawesome-menu/fa5-icon-list.txt", NULL};
 static const char *surf[] = {"surf", NULL};
 // Brightness
-static const char *cmdbrightnessup[]    = { "/home/maxim/.config/dwmbar/inc_brig.sh", NULL };
-static const char *cmdbrightnessdown[]  = { "/home/maxim/.config/dwmbar/dec_brig.sh", NULL };
+static const char *cmdbrightnessup[]    = { "/bin/sh", "xbacklight", "-inc", "5", NULL };
+static const char *cmdbrightnessdown[]    = { "/bin/sh", "xbacklight", "-dec", "5", NULL };
 // Sound
-static const char *cmdsoundup[]     = { "/home/maxim/.config/dwmbar/inc_vol.sh", NULL };
-static const char *cmdsounddown[]   = { "/home/maxim/.config/dwmbar/dec_vol.sh", NULL };
-static const char *cmdsoundtoggle[] = { "/home/maxim/.config/dwmbar/tog_vol.sh", NULL };
+static const char *cmdsoundup[]     = { "/bin/sh", "amixer", "-q", "sset", "Master", "5%+", NULL };
+static const char *cmdsounddown[]   = { "/bin/sh", "amixer", "-q", "sset", "Master", "5%-", NULL };
+static const char *cmdsoundtoggle[] = { "/bin/sh", "amixer", "-q", "sset", "Master", "toggle", NULL };
 // Screenshot
 static const char *cmdscrot[] = { "/bin/bash", "scrot", "'%Y-%m-%d-%s_screenshot_$wx$h.jpg'", "-e", "'mv $f /home/maxim/bilder/shots/'", NULL};
-// Lock screen
-static const char *cmdlock[] = {"/home/maxim/.config/blurlock", NULL};
 // Shutdown
-static const char *cmdpow[] = {"poweroff", NULL};
+static const char *cmdpow[] = {"/home/maxim/.config/down_script.sh", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = wincmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = surf } },
 	{ MODKEY,                       XK_i,      spawn,          {.v = iconcmd } },
@@ -93,13 +95,21 @@ static Key keys[] = {
 	{ 0,                            XF86AudioRaiseVolume,      spawn,          {.v = cmdsoundup } },
     { 0, XF86AudioLowerVolume, spawn, {.v = cmdsounddown } },
     { 0,                            XK_Print,  spawn,          {.v = cmdscrot } },
-    { MODKEY|ControlMask,           XK_l,      spawn,          {.v = cmdlock} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 
-	{ MODKEY|ShiftMask,             XK_k,      resizeclient_v, {.i = -1 }},
-	{ MODKEY|ShiftMask,             XK_j,      resizeclient_v, {.i = +1 }},
+	//{ MODKEY|ShiftMask,             XK_k,      resizeclient_v, {.i = -1 }},
+	//{ MODKEY|ShiftMask,             XK_j,      resizeclient_v, {.i = +1 }},
+    // Resize stuff
+    { MODKEY,					    XK_Down,	moveresize,		{.v = (int []){ 0, 25, 0, 0 }}},
+    { MODKEY,					    XK_Up,		moveresize,	    {.v = (int []){ 0, -25, 0, 0 }}},
+    { MODKEY,					    XK_Right,	moveresize,		{.v = (int []){ 25, 0, 0, 0 }}},
+    { MODKEY,					    XK_Left,	moveresize,		{.v = (int []){ -25, 0, 0, 0 }}},
+    { MODKEY|ShiftMask,			    XK_Down,	moveresize,		{.v = (int []){ 0, 0, 0, 25 }}},
+    { MODKEY|ShiftMask,			    XK_Up,		moveresize,		{.v = (int []){ 0, 0, 0, -25 }}},
+    { MODKEY|ShiftMask,			    XK_Right,	moveresize,		{.v = (int []){ 0, 0, 25, 0 }}},
+    { MODKEY|ShiftMask,			    XK_Left,	moveresize,		{.v = (int []){ 0, 0, -25, 0 }}},
 
 	{ MODKEY|ShiftMask,             XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_d,      incnmaster,     {.i = -1 } },

@@ -184,6 +184,7 @@ static void maprequest(XEvent *e);
 static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
+static void moveresize(const Arg *arg);
 static Client *nexttiled(Client *c);
 static void pop(Client *);
 static void propertynotify(XEvent *e);
@@ -191,7 +192,7 @@ static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
-static void resizeclient_v(int y);
+//static void resizeclient_v(int y);
 static void resizemouse(const Arg *arg);
 static void restack(Monitor *m);
 static void run(void);
@@ -707,8 +708,8 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
-		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
+		sw = TEXTW(stext);
+		drw_text(drw, m->ww - sw, 0, sw, bh, lrpad / 2, stext, 0);
 	}
 
 	for (c = m->clients; c; c = c->next) {
@@ -1291,12 +1292,29 @@ resizeclient(Client *c, int x, int y, int w, int h)
 	XSync(dpy, False);
 }
 
+/*
 void
 resizeclient_v(int y)
 {
     Client *c = selmon->sel;
     if(!c->isfloating) togglefloating(NULL);
     resize(c, c->x, c->y, c->w, c->h + y, 1);
+}
+*/
+
+static void
+moveresize(const Arg *arg)
+{
+	XEvent ev;
+	Monitor *m = selmon;
+	
+	if(!(m->sel && arg && arg->v && m->sel->isfloating)) return;
+
+	resize(m->sel, m->sel->x + ((int *)arg->v)[0],
+
+    m->sel->y + ((int *)arg->v)[1], m->sel->w + ((int *)arg->v)[2], m->sel->h + ((int *)arg->v)[3], True);
+	
+	while(XCheckMaskEvent(dpy, EnterWindowMask, &ev));
 }
 
 void
@@ -1556,8 +1574,8 @@ setup(void)
 	drw = drw_create(dpy, screen, root, sw, sh);
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
-	lrpad = drw->fonts->h;
-	bh = drw->fonts->h + 2;
+	lrpad = drw->fonts->h + horizpadbar;
+	bh = drw->fonts->h + vertpadbar;
 	updategeom();
 	/* init atoms */
 	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
