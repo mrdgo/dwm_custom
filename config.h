@@ -59,6 +59,7 @@ static const Layout layouts[] = {
 #define XF86AudioMute				0x1008ff12
 #define XF86AudioLowerVolume		0x1008ff11
 #define XF86AudioRaiseVolume	    0x1008ff13
+#define XF86Display                 0x1008FF59   /* Output switch key */
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -71,12 +72,12 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *iconcmd[] = {"/home/maxim/github/rofi-fontawesome/fontawesome-menu/fontawesome-menu", "-f", "/home/maxim/github/rofi-fontawesome/fontawesome-menu/fa5-icon-list.txt", NULL};
 static const char *surf[] = {"surf", NULL};
 // Brightness
-static const char *cmdbrightnessup[]    = { "/bin/sh", "xbacklight", "-inc", "5", NULL };
-static const char *cmdbrightnessdown[]    = { "/bin/sh", "xbacklight", "-dec", "5", NULL };
+static const char *cmdbrightnessup[]    = { "xbacklight", "-inc", "5", NULL };
+static const char *cmdbrightnessdown[]    = { "xbacklight", "-dec", "5", NULL };
 // Sound
-static const char *cmdsoundup[]     = { "/bin/sh", "amixer", "-q", "sset", "Master", "5%+", NULL };
-static const char *cmdsounddown[]   = { "/bin/sh", "amixer", "-q", "sset", "Master", "5%-", NULL };
-static const char *cmdsoundtoggle[] = { "/bin/sh", "amixer", "-q", "sset", "Master", "toggle", NULL };
+static const char *cmdsoundup[]     = { "amixer", "-q", "sset", "Master", "5%+", NULL };
+static const char *cmdsounddown[]   = { "amixer", "-q", "sset", "Master", "5%-", NULL };
+static const char *cmdsoundtoggle[] = { "amixer", "-q", "sset", "Speaker", "toggle", NULL };
 // Screenshot
 static const char *cmdscrot[] = { "/bin/bash", "scrot", "'%Y-%m-%d-%s_screenshot_$wx$h.jpg'", "-e", "'mv $f /home/maxim/bilder/shots/'", NULL};
 // Shutdown
@@ -89,18 +90,17 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = surf } },
 	{ MODKEY,                       XK_i,      spawn,          {.v = iconcmd } },
-    { 0,                            XF86MonBrightnessDown,     spawn,         {.v = cmdbrightnessdown } },
-	{ 0,                            XF86MonBrightnessUp,       spawn,         {.v = cmdbrightnessup } },
-	{ 0,                            XF86AudioMute,             spawn,          {.v = cmdsoundtoggle } },
-	{ 0,                            XF86AudioRaiseVolume,      spawn,          {.v = cmdsoundup } },
-    { 0, XF86AudioLowerVolume, spawn, {.v = cmdsounddown } },
-    { 0,                            XK_Print,  spawn,          {.v = cmdscrot } },
+    { 0,                            XF86MonBrightnessDown,     spawn,   {.v = cmdbrightnessdown } },
+	{ 0,                            XF86MonBrightnessUp,       spawn,   {.v = cmdbrightnessup } },
+	{ 0,                            XF86AudioMute,             spawn,   {.v = cmdsoundtoggle } },
+	{ 0,                            XF86AudioRaiseVolume,      spawn,   {.v = cmdsoundup } },
+    { 0,                            XF86AudioLowerVolume,      spawn,   {.v = cmdsounddown } },
+    { 0,                            XK_Print,                  spawn,   {.v = cmdscrot } },
+	{ 0,                            XF86Display,               spawn,   {.v = cmdscrot} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 
-	//{ MODKEY|ShiftMask,             XK_k,      resizeclient_v, {.i = -1 }},
-	//{ MODKEY|ShiftMask,             XK_j,      resizeclient_v, {.i = +1 }},
     // Resize stuff
     { MODKEY,					    XK_Down,	moveresize,		{.v = (int []){ 0, 25, 0, 0 }}},
     { MODKEY,					    XK_Up,		moveresize,	    {.v = (int []){ 0, -25, 0, 0 }}},
