@@ -16,8 +16,8 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { "#ebdbb2", "#282828", "#b8bb26" },
-	[SchemeSel]  = { "#ebdbb2", "#484848", "#c8cb36"  },
+	[SchemeNorm] = { "#ebdbb2", "#282828", "#989b06" },
+	[SchemeSel]  = { "#ebdbb2", "#484848", "#b8bb26"  },
 };
 
 /* tagging */
@@ -77,7 +77,7 @@ static const char *cmdbrightnessdown[]    = { "xbacklight", "-dec", "5", NULL };
 // Sound
 static const char *cmdsoundup[]     = { "amixer", "-q", "sset", "Master", "5%+", NULL };
 static const char *cmdsounddown[]   = { "amixer", "-q", "sset", "Master", "5%-", NULL };
-static const char *cmdsoundtoggle[] = { "amixer", "-q", "sset", "Speaker", "toggle", NULL };
+//static const char *cmdsoundtoggle[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 // Screenshot
 static const char *cmdscrot[] = { "/bin/bash", "scrot", "'%Y-%m-%d-%s_screenshot_$wx$h.jpg'", "-e", "'mv $f /home/maxim/bilder/shots/'", NULL};
 // Shutdown
@@ -92,7 +92,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_i,      spawn,          {.v = iconcmd } },
     { 0,                            XF86MonBrightnessDown,     spawn,   {.v = cmdbrightnessdown } },
 	{ 0,                            XF86MonBrightnessUp,       spawn,   {.v = cmdbrightnessup } },
-	{ 0,                            XF86AudioMute,             spawn,   {.v = cmdsoundtoggle } },
+	//{ 0,                            XF86AudioMute,             spawn,   {.v = cmdsoundtoggle } },
 	{ 0,                            XF86AudioRaiseVolume,      spawn,   {.v = cmdsoundup } },
     { 0,                            XF86AudioLowerVolume,      spawn,   {.v = cmdsounddown } },
     { 0,                            XK_Print,                  spawn,   {.v = cmdscrot } },
