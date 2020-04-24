@@ -72,11 +72,11 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *iconcmd[] = {"/home/maxim/github/rofi-fontawesome/fontawesome-menu/fontawesome-menu", "-f", "/home/maxim/github/rofi-fontawesome/fontawesome-menu/fa5-icon-list.txt", NULL};
 static const char *surf[] = {"surf", NULL};
 // Brightness
-static const char *cmdbrightnessup[]    = { "xbacklight", "-inc", "5", NULL };
-static const char *cmdbrightnessdown[]    = { "xbacklight", "-dec", "5", NULL };
+static const char *cmdbrightnessup[]    = { "/home/maxim/.config/brup.sh", NULL };
+static const char *cmdbrightnessdown[]    = { "/home/maxim/.config/brdw.sh", NULL };
 // Sound
-static const char *cmdsoundup[]     = { "amixer", "-q", "sset", "Master", "5%+", NULL };
-static const char *cmdsounddown[]   = { "amixer", "-q", "sset", "Master", "5%-", NULL };
+static const char *cmdsoundup[]     = { "/home/maxim/.config/volup.sh", NULL };
+static const char *cmdsounddown[]   = { "/home/maxim/.config/voldw.sh", NULL };
 //static const char *cmdsoundtoggle[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 // Screenshot
 static const char *cmdscrot[] = { "/bin/bash", "scrot", "'%Y-%m-%d-%s_screenshot_$wx$h.jpg'", "-e", "'mv $f /home/maxim/bilder/shots/'", NULL};
