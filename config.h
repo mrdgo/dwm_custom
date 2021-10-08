@@ -7,8 +7,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 0;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "mononoki:size=10" };
+static const char dmenufont[]       = "mononoki:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -16,7 +16,7 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { "#ebdbb2", "#282828", "#989b06" },
+	[SchemeNorm] = { "#ebdbb2", "#1d2021", "#989b06" },
 	[SchemeSel]  = { "#ebdbb2", "#484848", "#b8bb26"  },
 };
 
@@ -47,7 +47,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod4Mask
+#define MODKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -68,15 +68,15 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "rofi", "-modi", "drun", "-show", "drun", "-theme", "gruvbox-dark-soft", NULL };
 static const char *wincmd[] = { "rofi", "-modi", "window", "-show", "window", "-theme", "gruvbox-dark-soft", NULL };
-static const char *termcmd[]  = { "st", NULL };
-static const char *iconcmd[] = {"/home/maxim/github/rofi-fontawesome/fontawesome-menu/fontawesome-menu", "-f", "/home/maxim/github/rofi-fontawesome/fontawesome-menu/fa5-icon-list.txt", NULL};
-static const char *surf[] = {"surf", NULL};
+static const char *termcmd[]  = { "alacritty", NULL };
+//static const char *iconcmd[] = {"/home/maxim/github/rofi-fontawesome/fontawesome-menu/fontawesome-menu", "-f", "/home/maxim/github/rofi-fontawesome/fontawesome-menu/fa5-icon-list.txt", NULL};
+//static const char *surf[] = {"surf", NULL};
 // Brightness
 static const char *cmdbrightnessup[]    = { "/home/maxim/.config/brup.sh", NULL };
 static const char *cmdbrightnessdown[]    = { "/home/maxim/.config/brdw.sh", NULL };
 // Sound
-static const char *cmdsoundup[]     = { "/home/maxim/.config/volup.sh", NULL };
-static const char *cmdsounddown[]   = { "/home/maxim/.config/voldw.sh", NULL };
+static const char *cmdsoundup[]     = { "amixer", " -q", "sset", "Master", "-5%+" , NULL };
+static const char *cmdsounddown[]   = { "amixer", " -q", "sset", "Master", "-5%-" , NULL };
 //static const char *cmdsoundtoggle[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 // Screenshot
 static const char *cmdscrot[] = { "/bin/bash", "scrot", "'%Y-%m-%d-%s_screenshot_$wx$h.jpg'", "-e", "'mv $f /home/maxim/bilder/shots/'", NULL};
@@ -88,8 +88,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = wincmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_s,      spawn,          {.v = surf } },
-	{ MODKEY,                       XK_i,      spawn,          {.v = iconcmd } },
+	//{ MODKEY,                       XK_s,      spawn,          {.v = surf } },
+	//{ MODKEY,                       XK_i,      spawn,          {.v = iconcmd } },
     { 0,                            XF86MonBrightnessDown,     spawn,   {.v = cmdbrightnessdown } },
 	{ 0,                            XF86MonBrightnessUp,       spawn,   {.v = cmdbrightnessup } },
 	//{ 0,                            XF86AudioMute,             spawn,   {.v = cmdsoundtoggle } },
